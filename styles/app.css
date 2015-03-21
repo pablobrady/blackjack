@@ -7,8 +7,8 @@
   margin-right: 20px;
 }
 
-.covered {
-  background-color: black;
+.covered > div {
+  background-image:  url("../img/card-back.png");
 }
 
 .hand {
