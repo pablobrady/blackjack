@@ -55,7 +55,7 @@ class window.Hand extends Backbone.Collection
 
   checkScores: (dealerScore, playerScore) ->
     if dealerScore > playerScore
-      console.log('player lost')
+      console.log('playerl ost')
       @trigger('playerLost')
     else
       console.log('player won')

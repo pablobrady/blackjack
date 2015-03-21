@@ -17,6 +17,12 @@ class window.App extends Backbone.Model
     @get('dealerHand').on('gameOver', (->
      	@dealerStand()
     	).bind(@))
+    @get('dealerHand').on('playerLost playerWin bust', =>
+      @trigger('changeButtons')
+      )
+    @get('playerHand').on('playerLost playerWin bust', =>
+      @trigger('changeButtons')
+      )
 
   dealerStand: ->
     dealerScore = @get('dealerHand').scores()[0]
