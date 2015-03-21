@@ -6,6 +6,7 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
     @get('playerHand').on('stand', (->
+     	@get('dealerHand').at(0).flip()
      	@get('dealerHand').hit()
     	).bind(@))
     @get('dealerHand').on('hit', (->
@@ -17,7 +18,7 @@ class window.App extends Backbone.Model
     @get('dealerHand').on('gameOver', (->
      	@dealerStand()
     	).bind(@))
-    @get('dealerHand').on('playerLost playerWin bust', =>
+    @get('dealerHand').on('playerLost playerWin bust push', =>
       @trigger('changeButtons')
       )
     @get('playerHand').on('playerLost playerWin bust', =>

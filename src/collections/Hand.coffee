@@ -3,20 +3,23 @@ class window.Hand extends Backbone.Collection
 
   initialize: (array, @deck, @isDealer) ->
     @isDealer = @isDealer
+    @on 'flip', => @trigger('flip2')
 
   hit: ->
     console.log(@isDealer, " HIT RECEIVED!")
-    @add(@deck.pop())
-    @trigger('hit')
-    # if dealer and score < 17   HIT!
-    # if dealer >= 17   CHECK TO SEE WHO WON.
-
-    if @isDealer? and @scores()[0] >= 17
-      console.log('Dealer stands')
+    if @isDealer? and @scores()[0] >= 17 and @scores()[0] <=21
+      console.log('Dealer stands on ' + @scores()[0])
       @trigger('gameOver')
-    else if @isDealer?
-      @hit()   
+    else 
+      @add(@deck.pop())
+      @trigger('hit')
 
+    if @isDealer? and @scores()[0] >= 17 and @scores()[0] <=21
+      console.log('Dealer stands on ' + @scores()[0])
+      @trigger('gameOver')
+    else if @isDealer? and @scores()[0] <= 21
+      @hit()
+    
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
   , 0
@@ -30,6 +33,11 @@ class window.Hand extends Backbone.Collection
     # Usually, that array contains one element. That is the only score.
     # when there is an ace, it offers you two scores - the original score, and score + 10.
     [@minScore(), @minScore() + 10 * @hasAce()]
+    if @minScore() + 10 * @hasAce() > 21
+      return [@minScore()]
+    else 
+      return [@minScore() + 10 * @hasAce()]
+
 
   checkBust: ->
     # If this score > 21  BUST!
@@ -46,17 +54,17 @@ class window.Hand extends Backbone.Collection
     # Compare player and dealer score.
     # 
     # console.log(Math.max(@get("scores")))
-    if Math.max( @scores ) > 21
-      # bust
-    else
-      # dealer's turn
-      @trigger('stand')
+    
+    # dealer's turn
+    @trigger('stand')
 
 
   checkScores: (dealerScore, playerScore) ->
     if dealerScore > playerScore
       console.log('playerl ost')
       @trigger('playerLost')
-    else
+    else if playerScore > dealerScore
       console.log('player won')
       @trigger('playerWin')
+    else
+      @trigger('push')
