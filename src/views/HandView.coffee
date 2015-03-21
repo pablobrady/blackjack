@@ -6,6 +6,12 @@ class window.HandView extends Backbone.View
   initialize: ->
     @collection.on 'add remove change', => @render()
     @collection.on 'bust', => @renderBust()
+    @collection.on 'playerLost', =>
+      console.log('playerlost')
+      @renderLoss()
+    @collection.on 'playerWin', =>
+      console.log('playerwin')
+      @renderWin()
     @render()
 
   render: ->
@@ -30,3 +36,11 @@ class window.HandView extends Backbone.View
       new CardView(model: card).$el
     @$('.score').text @collection.scores()[0]
     @$('.finalMsg').text " - You WIN!"
+
+  renderLoss: ->
+    @$el.children().detach()
+    @$el.html @template @collection
+    @$el.append @collection.map (card) ->
+      new CardView(model: card).$el
+    @$('.score').text @collection.scores()[0]
+    @$('.finalMsg').text " - You Lost!"

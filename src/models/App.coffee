@@ -9,12 +9,19 @@ class window.App extends Backbone.Model
      	@get('dealerHand').hit()
     	).bind(@))
     @get('dealerHand').on('hit', (->
-     	@get('dealerHand').checkScore()
+     	@get('dealerHand').checkBust()
     	).bind(@))
     @get('playerHand').on('hit', (->
-     	@get('playerHand').checkScore()
+     	@get('playerHand').checkBust()
     	).bind(@))
     @get('dealerHand').on('gameOver', (->
-     	console.log('GAME OVER')
+     	@dealerStand()
     	).bind(@))
+
+  dealerStand: ->
+    dealerScore = @get('dealerHand').scores()[0]
+    playerScore = @get('playerHand').scores()[0]
+
+    @get('playerHand').checkScores(dealerScore, playerScore)
+
 

@@ -11,10 +11,11 @@ class window.Hand extends Backbone.Collection
     # if dealer and score < 17   HIT!
     # if dealer >= 17   CHECK TO SEE WHO WON.
 
-    @trigger('gameOver') if @isDealer? and @scores()[0] >= 17
-        
-
-
+    if @isDealer? and @scores()[0] >= 17
+      console.log('Dealer stands')
+      @trigger('gameOver')
+    else if @isDealer?
+      @hit()   
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -30,7 +31,7 @@ class window.Hand extends Backbone.Collection
     # when there is an ace, it offers you two scores - the original score, and score + 10.
     [@minScore(), @minScore() + 10 * @hasAce()]
 
-  checkScore: ->
+  checkBust: ->
     # If this score > 21  BUST!
     score = @get('scores')
     if @scores()[0] > 21
@@ -50,3 +51,12 @@ class window.Hand extends Backbone.Collection
     else
       # dealer's turn
       @trigger('stand')
+
+
+  checkScores: (dealerScore, playerScore) ->
+    if dealerScore > playerScore
+      console.log('player lost')
+      @trigger('playerLost')
+    else
+      console.log('player won')
+      @trigger('playerWin')
