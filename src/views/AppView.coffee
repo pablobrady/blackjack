@@ -1,6 +1,6 @@
 class window.AppView extends Backbone.View
   template: _.template '
-    <button class="hit-button">Hit</button> <button class="stand-button">Stand</button><button class="newGame">New Game</button>
+    <button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="newGame">New Game</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
@@ -15,11 +15,20 @@ class window.AppView extends Backbone.View
   initialize: ->
     @model.on('changeButtons', ->
       console.log('button actions')
-      $('.hit-button').hide()
-      $('.stand-button').hide()
-      $('.newGame').show()
+      $('.hit-button').animate({
+        opacity: 0,
+        left: "-50"
+      }, 1000) #hide()
+      $('.stand-button').animate({
+        opacity: 0,
+        left: "-50"
+      }, 1000) #.hide()
+      $('.newGame').animate({
+        opacity: 1.0,
+      }, 1000) #.show()
     )
     @render()
+    @model.checkForBlackjack()
 
   render: ->
     @$el.children().detach()

@@ -68,3 +68,6 @@ class window.Hand extends Backbone.Collection
       @trigger('playerWin')
     else
       @trigger('push')
+
+  blackJack: ->
+    @trigger('blackJack')

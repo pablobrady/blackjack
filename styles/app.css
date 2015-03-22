@@ -18,3 +18,19 @@
 .newGame {
 	display: none;
 }
+
+.hit-button {
+	font-size: 14px;
+}
+
+.stand-button {
+	font-size: 14px;
+}
+
+.newGame {
+	font-size: 14px;
+}
+
+body {
+	background-color: darkgreen;
+}

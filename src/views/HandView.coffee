@@ -15,6 +15,8 @@ class window.HandView extends Backbone.View
     @collection.on 'push', =>
       console.log('push')
       @renderPush()
+    @collection.on 'blackJack', =>
+      @renderBlackJack()
     @render()
 
   render: ->
@@ -56,3 +58,12 @@ class window.HandView extends Backbone.View
       new CardView(model: card).$el
     @$('.score').text @collection.scores()[0]
     @$('.finalMsg').text " - Push"
+
+  renderBlackJack: ->
+    @$el.children().detach()
+    @$el.html @template @collection
+    @$el.append @collection.map (card) ->
+      new CardView(model: card).$el
+    @$('.score').text @collection.scores()[0]
+    @$('.finalMsg').text " - BLACKJACK!"
+
